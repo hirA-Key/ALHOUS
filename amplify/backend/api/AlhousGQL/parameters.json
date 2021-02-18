@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "AlhousGQL",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authalhous46968baa",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
