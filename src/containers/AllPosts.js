@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useReducer } from 'react';
-
 import {API, graphqlOperation } from 'aws-amplify';
-
 import { listPostsSortedByTimestamp } from '../graphql/queries';
 import { onCreatePost } from '../graphql/subscriptions';
-
 import PostList from '../components/PostList';
 import Sidebar from './Sidebar';
-
 const SUBSCRIPTION = 'SUBSCRIPTION';
 const INITIAL_QUERY = 'INITIAL_QUERY';
 const ADDITIONAL_QUERY = 'ADDITIONAL_QUERY';
@@ -30,11 +26,12 @@ export default function AllPosts() {
   const [nextToken, setNextToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  //全ユーザーのPostを時系列順でフェッチ
   const getPosts = async (type, nextToken = null) => {
     const res = await API.graphql(graphqlOperation(listPostsSortedByTimestamp, {
       type: "post",
       sortDirection: 'DESC',
-      limit: 20, //default = 10
+      limit: 15, //default = 10
       nextToken: nextToken,
     }));
     console.log(res);
@@ -48,6 +45,7 @@ export default function AllPosts() {
     getPosts(ADDITIONAL_QUERY, nextToken);
   }
 
+  //Subscription: リアルタイムでの新規Postの取得
   useEffect(() => {
     getPosts(INITIAL_QUERY);
 
@@ -65,13 +63,13 @@ export default function AllPosts() {
   return (
     <React.Fragment>
       <Sidebar
-        activeListItem='global-timeline'
+        activeListItem='home'
       />
       <PostList
         isLoading={isLoading}
         posts={posts}
         getAdditionalPosts={getAdditionalPosts}
-        listHeaderTitle={'Global Timeline'}
+        listHeaderTitle={'HOME'}
       />
     </React.Fragment>
   )

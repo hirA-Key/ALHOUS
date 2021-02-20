@@ -4,25 +4,20 @@ import { vocabularies } from './assets/vocabularies/message';
 import { AmplifyAuthenticator, AmplifySignUp } from '@aws-amplify/ui-react';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import awsconfig from './aws-exports';
-
 import {
   HashRouter,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
-
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
 import AllPosts from './containers/AllPosts';
 import PostsBySpecifiedUser from './containers/PostsBySpecifiedUser';
 
 Amplify.configure(awsconfig);
 I18n.putVocabularies(vocabularies);
 I18n.setLanguage("ja");
-
-const drawerWidth = 240;
 
 const theme = createMuiTheme({
   palette: {
@@ -44,6 +39,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: [
+      'Roboto',
       'Arial',
     ].join(','),
   },
@@ -52,6 +48,7 @@ const theme = createMuiTheme({
   },
 });
 
+const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -83,7 +80,6 @@ const App = () => {
   const [user, setUser] = React.useState();
 
   const classes = useStyles();
-
   React.useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
@@ -98,7 +94,7 @@ const App = () => {
         <HashRouter>
           <Switch>
             <Route exact path='/' component={AllPosts} />
-            <Route exact path='/global-timeline' component={AllPosts} />
+            <Route exact path='/home' component={AllPosts} />
             <Route exact path='/:userId' component={PostsBySpecifiedUser}/>
             <Redirect path="*" to="/" />
           </Switch>

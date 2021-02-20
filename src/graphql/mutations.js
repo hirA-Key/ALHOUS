@@ -29,3 +29,46 @@ export const deletePost = /* GraphQL */ `
     }
   }
 `;
+export const createFollowRelationship = /* GraphQL */ `
+  mutation CreateFollowRelationship(
+    $input: CreateFollowRelationshipInput!
+    $condition: ModelFollowRelationshipConditionInput
+  ) {
+    createFollowRelationship(input: $input, condition: $condition) {
+      followeeId
+      followerId
+      timestamp
+    }
+  }
+`;
+export const deleteFollowRelationship = /* GraphQL */ `
+  mutation DeleteFollowRelationship(
+    $input: DeleteFollowRelationshipInput!
+    $condition: ModelFollowRelationshipConditionInput
+  ) {
+    deleteFollowRelationship(input: $input, condition: $condition) {
+      followeeId
+      followerId
+      timestamp
+    }
+  }
+`;
+export const createTimeline = /* GraphQL */ `
+  mutation CreateTimeline(
+    $input: CreateTimelineInput!
+    $condition: ModelTimelineConditionInput
+  ) {
+    createTimeline(input: $input, condition: $condition) {
+      userId
+      timestamp
+      postId
+      post {
+        type
+        id
+        content
+        owner
+        timestamp
+      }
+    }
+  }
+`;

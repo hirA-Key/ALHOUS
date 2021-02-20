@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -12,7 +11,6 @@ import {
   Typography,
   CircularProgress,
 } from '@material-ui/core';
-
 import { useHistory } from 'react-router';
 import moment from 'moment';
 
@@ -96,7 +94,6 @@ function PostItem({ post }) {
   const history = useHistory();
   const now = moment();
   console.log(now)
-
   const calcTimestampDiff = (timestamp) => {
     const scales = ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'];
 
@@ -105,7 +102,6 @@ function PostItem({ post }) {
       const diff = moment(now).diff(timestamp * 1000, scale);
       if( diff > 0) return diff + scale.charAt(0)
     }
-
     return 0 + scales[scales.length - 1].charAt(0)
   }
 

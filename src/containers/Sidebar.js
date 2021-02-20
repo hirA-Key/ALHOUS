@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -12,17 +11,14 @@ import {
 } from '@material-ui/core';
 import {
   Person as PersonIcon,
-  Public as PublicIcon,
+  Home as HomeIcon,
 } from '@material-ui/icons';
-
 import {Auth, API, graphqlOperation } from 'aws-amplify';
-
 import { createPost } from '../graphql/mutations';
 import { useHistory } from 'react-router';
 
-const drawerWidth = 340;
+const drawerWidth = 280;
 const MAX_POST_CONTENT_LENGTH = 140;
-
 const useStyles = makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
@@ -38,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   list: {
-    width: 300,
+    width: 340,
   },
 }));
 
@@ -50,6 +46,7 @@ export default function Sidebar({activeListItem}) {
   const [isError, setIsError] = React.useState(false);
   const [helperText, setHelperText] = React.useState('');
 
+  //textFiledの設定(140文字制限)
   const handleChange = event => {
     setValue(event.target.value);
     if (event.target.value.length > MAX_POST_CONTENT_LENGTH) {
@@ -61,6 +58,7 @@ export default function Sidebar({activeListItem}) {
     }
   };
 
+  //投稿
   const onPost = async () => {
     const res = await API.graphql(graphqlOperation(createPost, { input: {
       type: 'post',
@@ -72,6 +70,7 @@ export default function Sidebar({activeListItem}) {
     setValue('');
   }
 
+  //サインアウト機能
   const signOut = () => {
     Auth.signOut()
       .then(data => console.log(data))
@@ -89,21 +88,22 @@ export default function Sidebar({activeListItem}) {
     >
       <div className={classes.toolbar} />
       <List>
-        <ListItem
+      <ListItem
           button
-          selected={activeListItem === 'global-timeline'}
+          selected={activeListItem === 'home'}
           onClick={() => {
             Auth.currentAuthenticatedUser().then((user) => {
-              history.push('/global-timeline');
+              history.push('/home');
             })
           }}
-          key='global-timeline'
+          key='home'
         >
           <ListItemIcon>
-            <PublicIcon />
+            <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Global Timeline" />
+          <ListItemText primary="HOME" />
         </ListItem>
+
         <ListItem
           button
           selected={activeListItem === 'profile'}
@@ -117,15 +117,16 @@ export default function Sidebar({activeListItem}) {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary="Profile" />
+          <ListItemText primary="プロフィール" />
         </ListItem>
+
         <ListItem key='post-input-field'>
           <ListItemText primary={
             <TextField
               error={isError}
               helperText={helperText}
               id="post-input"
-              label="Type your post!"
+              label="つぶやく"
               multiline
               rowsMax="8"
               variant="filled"
@@ -145,7 +146,7 @@ export default function Sidebar({activeListItem}) {
               onClick={onPost}
               fullWidth
             >
-              Post
+              送信
             </Button>
           } />
         </ListItem>
